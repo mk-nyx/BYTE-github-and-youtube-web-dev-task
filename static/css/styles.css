@@ -1,0 +1,120 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color:#008b4f;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Container styling with increased height */
+.container {
+    text-align: center;
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 400px;
+    min-height: 600px;  /* Increased height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Organization logo styling */
+.org-logo {
+    align-self: center;
+    width: 100px;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+/* Authentication button section */
+.auth-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+}
+
+.github-button {
+    background-color: #24292e;
+    color: white;
+}
+
+.github-button:hover {
+    background-color: #444;
+}
+
+.google-button {
+    background-color: #c12315;
+    color: white;
+}
+
+.google-button:hover {
+    background-color: #c33e2d;
+}
+
+/* Icon inside buttons */
+.icon {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+    border-radius: 10px;
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    p {
+        font-size: 1rem;
+    }
+}
+.footer {
+    position: fixed;
+    display: flex;
+    justify-content: flex-end;
+    bottom: 0;
+    padding: 20px;
+    color: black;
+    width: 100%;
+}
