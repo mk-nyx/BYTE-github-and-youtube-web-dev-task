@@ -18,7 +18,6 @@ app.use(session({
     saveUninitialized: false,
     cookie: {
         httpOnly: true,
-        secure: false,
         maxAge: 24 * 60 * 60 * 1000, // 24 hours
     },
 }));
@@ -52,7 +51,7 @@ async function getAllFollowers(accessToken, account) {
 passport.use(new githubStrategy({
     clientID: process.env.github_clientId,
     clientSecret: process.env.github_clientSecret,
-    callbackURL: "http://localhost:3000/auth/github/callback"
+    callbackURL: "https://byte-github-and-youtube-web-dev-task.onrender.com/auth/github/callback"
 },
     async function (accessToken, refreshToken, profile, done) {
         try {
@@ -80,7 +79,7 @@ passport.use(new githubStrategy({
 passport.use("google", new googleStrategy({
     clientID: process.env.google_clientId,
     clientSecret: process.env.google_clientSecret,
-    callbackURL: "http://localhost:3000/auth/google/callback",
+    callbackURL: "https://byte-github-and-youtube-web-dev-task.onrender.com/auth/google/callback",
     scope: ['profile', 'email', 'https://www.googleapis.com/auth/youtube.readonly']
 },
     async function (accessToken, refreshToken, profile, done) {
