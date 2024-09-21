@@ -6,3 +6,4 @@ In this project, it checks that if a user is following BYTE society's GitHub acc
 If not, they are asked to either follow BYTE's GitHub account or subscribe the BYTE's YouTube channel.
 The middleware used in the project include passport.js, passport-github2 and passport-google-oauth20.
 I have deployed the project on render and it is now live at https://byte-github-and-youtube-web-dev-task.onrender.com
+(For now, I have reached the api limit for github, so authentication with github will give an error. You can still do authentication with youtube though. Will update as soon as the github api is back up.)
