@@ -18,7 +18,6 @@ app.use(session({
     saveUninitialized: false,
     cookie: {
         httpOnly: true,
-        secure: false,
         maxAge: 24 * 60 * 60 * 1000, // 24 hours
     },
 }));
@@ -34,7 +33,7 @@ passport.deserializeUser((user, done) => done(null, user));
 passport.use("github", new githubStrategy({
     clientID: process.env.github_clientId,
     clientSecret: process.env.github_clientSecret,
-    callbackURL: "http://localhost:3000/auth/github/callback",
+    callbackURL: "https://byte-github-and-youtube-web-dev-task.onrender.com/auth/github/callback",
     scope: ['user']
 },
     async function (accessToken, refreshToken, profile, done) {
@@ -42,7 +41,6 @@ passport.use("github", new githubStrategy({
             console.log("Authenticating GitHub user:", profile.username);
 
             const apiurl = `https://api.github.com/users/${profile.username}/following/bytemait`;
-            
             const response = await axios.get(apiurl, {
                 headers: { Authorization: `token ${accessToken}` }
             });
@@ -66,7 +64,7 @@ passport.use("github", new githubStrategy({
 passport.use("google", new googleStrategy({
     clientID: process.env.google_clientId,
     clientSecret: process.env.google_clientSecret,
-    callbackURL: "http://localhost:3000/auth/google/callback",
+    callbackURL: "https://byte-github-and-youtube-web-dev-task.onrender.com/auth/google/callback",
     scope: ['profile', 'email', 'https://www.googleapis.com/auth/youtube.readonly']
 },
     async function (accessToken, refreshToken, profile, done) {
@@ -114,7 +112,6 @@ const ensureAuthenticated = function (req, res, next) {
 }
 
 // routes
-
 // main page route
 app.get("/", function (req, res) {
     if (req.user) {
