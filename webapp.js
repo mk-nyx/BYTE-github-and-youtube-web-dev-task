@@ -36,7 +36,7 @@ async function getAllFollowers(accessToken, account) {
     while (true) {
         const apiurl = `https://api.github.com/users/${account}/followers?page=${page}&per_page=100`;
         const response = await axios.get(apiurl, {
-            headers: { Authorization: `token$ {accessToken}`, 'If-None-Match': '' }
+            headers: { Authorization: `token ${accessToken}`, 'If-None-Match': '' }
         });
         if (response.data.length === 0) {
             break;
