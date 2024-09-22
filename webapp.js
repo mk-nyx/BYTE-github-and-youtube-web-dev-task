@@ -30,43 +30,29 @@ app.use(passport.session());
 passport.serializeUser((user, done) => done(null, user));
 passport.deserializeUser((user, done) => done(null, user));
 
-// function to get all the followers from all pages in a list
-async function getAllFollowers(accessToken, account) {
-    let page = 1;
-    let allFollowers = [];
-    while (true) {
-        const apiurl = `https://api.github.com/users/${account}/followers?page=${page}&per_page=100`;
-        const response = await axios.get(apiurl, {
-            headers: { Authorization: `token$ {accessToken}`, 'If-None-Match': '' }
-        });
-        if (response.data.length === 0) {
-            break;
-        }
-        allFollowers = allFollowers.concat(response.data);
-        page++;
-    }
-    return allFollowers;
-}
-
 // GitHub strategy
-passport.use(new githubStrategy({
+passport.use("github", new githubStrategy({
     clientID: process.env.github_clientId,
     clientSecret: process.env.github_clientSecret,
-    callbackURL: "http://localhost:3000/auth/github/callback"
+    callbackURL: "http://localhost:3000/auth/github/callback",
+    scope: ['user']
 },
     async function (accessToken, refreshToken, profile, done) {
         try {
             console.log("Authenticating GitHub user:", profile.username);
-            const followers = await getAllFollowers(accessToken, "bytemait");
-            console.log(`Fetched ${followers.length} followers for bytemait`);
 
-            const isFollowing = followers.some(follower => follower.id.toString() === profile.id.toString());
-            console.log(`User ${profile.username} is following bytemait: ${isFollowing}`);
+            const apiurl = `https://api.github.com/users/${profile.username}/following/bytemait`;
+            
+            const response = await axios.get(apiurl, {
+                headers: { Authorization: `token ${accessToken}` }
+            });
 
-            if (isFollowing) {
+            if (response.status === 204) {
+                console.log(`User ${profile.username} is following bytemait github account:`, true);
                 return done(null, profile);
             }
             else {
+                console.log(`User ${profile.username} is following bytemait github account:`, false);
                 return done(null, false, { message: `You must follow the bytemait GitHub account.` });
             }
         } catch (error) {
@@ -98,10 +84,11 @@ passport.use("google", new googleStrategy({
                 mine: true
             });
 
-            console.log("Authenticating YouTube user...")
+            const userName = profile.displayName;
+            console.log(`Authenticating YouTube user: ${userName}`)
 
             const isSubscribed = response.data.items.some(item => item.snippet.resourceId.channelId === "UCgIzTPYitha6idOdrr7M8sQ");
-            console.log("User is subscribed to BYTE-mait:", isSubscribed);
+            console.log(`User ${userName} is subscribed to BYTE-mait youtube channel:`, isSubscribed);
 
             if (isSubscribed) {
                 return done(null, profile);
@@ -137,7 +124,7 @@ app.get("/", function (req, res) {
 });
 
 // auth github route
-app.get('/auth/github', passport.authenticate('github', { scope: ['user:follow'] }));
+app.get('/auth/github', passport.authenticate("github"));
 
 app.get("/auth/github/callback",
     passport.authenticate("github", { failureRedirect: "/access-failed" }),
@@ -177,5 +164,5 @@ app.get("/logout", function (req, res) {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, function () {
-    console.log("Server is running on port 3000");
+    console.log(`Server is running on port ${PORT}`);
 });
