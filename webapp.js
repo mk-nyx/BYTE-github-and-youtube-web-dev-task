@@ -49,11 +49,11 @@ passport.use("github", new githubStrategy({
                 console.log(`User ${profile.username} is following bytemait github account:`, true);
                 return done(null, profile);
             }
-            else {
+        } catch (error) {
+            if (error.response && error.response.status === 404){
                 console.log(`User ${profile.username} is following bytemait github account:`, false);
                 return done(null, false, { message: `You must follow the bytemait GitHub account.` });
             }
-        } catch (error) {
             console.error("Error in GitHub Strategy:", error);
             return done(error);
         }
